@@ -1,33 +1,35 @@
 #***************************************************************************
 #Datamining
-#Autor: Iñigo Montánchez
+#Autor: Inigo Montanchez
 #Fecha: 17/9/2018
-#Descripción: Estudio de sentimientos con paquete sentiments en temáticas de tweets.
-#Versión: 1.0
+#Descripcion: Estudio de sentimientos con paquete sentiments en tematicas de tweets.
+#Version: 1.0
 #***************************************************************************
 
-#Recomendación para buen funcionamiento: 
+#Recomendacion para buen funcionamiento: 
 
-#Para el buen funciomiento de la aplicación se deberán ejecutar los pasos en el orden indicado.
+#Para el buen funciomiento de la aplicacion se deberian ejecutar los pasos en el orden indicado.
 
 #NO EJECUTAR LAS LINEAS COMENTADAS DE SEPARACION *****
 #***************************************************************************
 
 
 
-#instalación de librerias que necesitamos 
-#la libreria devtools nos permitirá instalar Rstem y sentiment por comandos
-#las librerias devtools y sentiments se instalarán a partir de los comandos
+#instalacion de librerias que necesitamos 
+#la libreria devtools nos permitira instalar Rstem y sentiment por comandos
+#las librerias devtools y sentiments se instalaran a partir de los comandos
 #abrir terminal del sistema operativo
 #navegar hasta el directorio de los paquetes y ejecutar de forma separada:
 #R CMD INSTALL Rstem_0.4-1.tar
 #R CMD INSTALL sentiment_0.2.tar
-#ambos archivos a instalar serán descargados de la página de CRAN
-#se dispondrá de ellos dentro de este repositorio.
+#EN CASO DE DAR ERROR EN UN SISTEMA MAC QUIZA HAYA QUE LANZAR POR CONSOLA EL COMANDO
+#xcode-select --install
+#ambos archivos a instalar seran descargados de la pagina de CRAN
+#se dispondra de ellos dentro de este repositorio.
 #https://cran.r-project.org/src/contrib/Archive/Rstem/
 #https://cran.r-project.org/src/contrib/Archive/sentiment/
 
-# 1º PASO A EJECUTAR -> INSTALACIÓN DE PAQUETES
+# 1 PASO A EJECUTAR -> INSTALACION DE PAQUETES
 install.packages("twitteR")
 install.packages("RCurl")
 install.packages("tm")
@@ -40,7 +42,7 @@ install.packages("ggplot2")
 #***************************************************************************
 
 
-# 2º PASO A EJECUTAR -> CARGAR LIBRERIAS
+# 2 PASO A EJECUTAR -> CARGAR LIBRERIAS
 #cargamos las librerias
 library(twitteR)
 library(sentiment)
@@ -53,15 +55,15 @@ library(scales)
 #***************************************************************************
 
 
-# 3º PASO A EJECUTAR -> CARGAR CLAVES DE DESARROLLADOR
+# 3 PASO A EJECUTAR -> CARGAR CLAVES DE DESARROLLADOR
 #a partir de la cuenta de desarrolladores de twitter se deben asociar los datos de cuenta
 #https://apps.twitter.com
-#esto  nos permitirá conectar a twitter como aplicación
+#esto  nos permitir?? conectar a twitter como aplicaci??n
 consumer_key <- "83NdFjtxGPcMcD55BUpXwle5f"
 consumer_secret <- "ty4hHcgQPxvn105TpvqWizP7QxgYjN8DhhnjweWxyVFYdFiCoU"
 access_token <- "2191636523-HVKyuKUlATinIq9ZdeT7nAMcBNQKgqxgiM57sRu"
 access_token_secret <- "LmBNxCSK8KhMR8qQjj2JNOA4xPQ0o30Tbuk02IIIisyLj"
-#se realiza la conexión
+#se realiza la conexion
 setup_twitter_oauth(consumer_key, consumer_secret, access_token, access_token_secret)
 
 #LIMPIAR CONSOLA
@@ -69,9 +71,9 @@ cat("\014")
 #***************************************************************************
 
 
-# 4º PASO A EJECUTAR -> ESPECIFICAR TEMATICA A ANALIZAR.
+# 4 PASO A EJECUTAR -> ESPECIFICAR TEMATICA A ANALIZAR.
 #se borra la variable primero con RM para evitar errores 
-#escribimos una temática a analizar
+#escribimos una tematica a analizar
 bool = exists("TEMATICA")
 if(bool == TRUE){
 rm(TEMATICA)#SI SALE ERROR NO PASA NADA 
@@ -82,17 +84,17 @@ if(exists("TEMATICA")==FALSE){
 #LIMPIAR CONSOLA
 cat("\014") 
   
-TEMATICA=readline("ESCRIBA NOMBRE DE LA TEMÁTICA A ANALIZAR : ")
-print(paste("TEMÁTICA INSERTADA => ", TEMATICA))
+TEMATICA=readline("ESCRIBA NOMBRE DE LA TEMATICA A ANALIZAR : ")
+print(paste("TEMATICA INSERTADA => ", TEMATICA))
 
 }
 
 #***************************************************************************
 
 
-# 5º PASO A EJECUTAR -> SE RECOGE LA INFORMACIÓN DE TWITTER REFERENTE AL TEMA
-#recogemos tweets siendo N el número de tweets a recoger y LANG el lenguaje
-#se puede poner en español ES pero funciona con menor exactitud
+# 5 PASO A EJECUTAR -> SE RECOGE LA INFORMACION DE TWITTER REFERENTE AL TEMA
+#recogemos tweets siendo N el numero de tweets a recoger y LANG el lenguaje
+#se puede poner en espanol ES pero funciona con menor exactitud
 TWEET <-searchTwitter(TEMATICA, n=2000, lang="es")
 TWEET #muestra tweets
 TWEET[1:3] # muestra 3 tweets
@@ -102,13 +104,13 @@ typeof(TWEET_texto) #vemos que ahora es de tipo character
 
 #PUEDE TARDAR EN EJECUTAR YA QUE DEBE RECOGER 2000 MENSAJES
 #########
-#FIN DE LA CONEXCION A TWITTER Y DE LA OPTENCIÓN DEL TEXTO
+#FIN DE LA CONEXCION A TWITTER Y DE LA OPTENCI??N DEL TEXTO
 #########
 
 
 #***************************************************************************
 
-# 6º PASO A EJECUTAR
+# 6 PASO A EJECUTAR
 #########
 #DAMOS FORMATO AL TEXTO  HACEMOS USO DE FUNCIONES DEL PACKAGE "TM"
 #########
@@ -116,11 +118,11 @@ typeof(TWEET_texto) #vemos que ahora es de tipo character
 TWEET_texto = gsub("(RT|via)((?:\\b\\W*@\\w+)+)", "", TWEET_texto)
 #eliminamos nombre de persona que ha twitteado
 TWEET_texto = gsub("@\\w+", "", TWEET_texto)
-#eliminamos signos de puntuación
+#eliminamos signos de puntuaci??n
 TWEET_texto = gsub("[[:punct:]]", "", TWEET_texto)
-#eliminamos dígitos
+#eliminamos digitos
 TWEET_texto = gsub("[[:digit:]]", "", TWEET_texto)
-# eliminamos links a otras páginas y código html
+# eliminamos links a otras paginas y codigo html
 TWEET_texto = gsub("http\\w+", "", TWEET_texto)
 #eliminamos espacios
 TWEET_texto = gsub("[ \t]{2,}", "", TWEET_texto)
@@ -138,7 +140,7 @@ minusculas_error = function(x)
   # resultado que devolveremos en TWEET_texto
   return(y)
 }
-# convertimos a minusculas usando la función minusculas
+# convertimos a minusculas usando la funci??n minusculas
 TWEET_texto = sapply(TWEET_texto, minusculas_error)
 
 # eliminamos valores no disponibles o vacios
@@ -148,11 +150,11 @@ names(TWEET_texto) = NULL
 
 #***************************************************************************
 
-##################EJECUTAR EL RESTO PARA CONCLUIR ANÁLISIS################
+##################EJECUTAR EL RESTO PARA CONCLUIR ANALISIS################
 ########
 # COMENZAMOS EL ANALISIS DE LAS EMOCIONES
 ########
-# clasificamos la emoción a través de funciones dadas por SENTIMENT
+# clasificamos la emocion a traves de funciones dadas por SENTIMENT
 # EJEMPLO DE LA LIBRERIA: classify_emocion(documents,algorithm="bayes",verbose=TRUE)
 clasificar_emocion = classify_emotion(TWEET_texto, algorithm="bayes", prior=1.0)
 #conseguir un ajuste de las emociones
@@ -179,27 +181,26 @@ dataframe_sentimiento = within(dataframe_sentimiento,
 #################
 #GRAFICO GGPLOT
 #################
-# grafico de distribución de emociones
+# grafico de distribucion de emociones
 ggplot(dataframe_sentimiento, aes(x=emocion)) +
   ggtitle(paste(TEMATICA))+ 
   theme(plot.title = element_text(hjust = 0.5)) + #AJUSTAR TITULO AL CENTRO
   geom_bar(aes(y=..count.., fill=emocion)) +
   scale_fill_brewer(palette="Dark2") +
-  labs(x="emociones", y="número de tweets")
+  labs(x="emociones", y="numero de tweets")
 
 ###############
-#grafico de distribución de polaridad
+#grafico de distribucion de polaridad
 ###############
-# plot distribution of polarity
 ggplot(dataframe_sentimiento, aes(x=polarity))+ 
   ggtitle(paste(TEMATICA))+ 
   theme(plot.title = element_text(hjust = 0.5)) + #AJUSTAR TITULO AL CENTRO
   geom_bar(aes(y=..count.., fill=polarity)) +
   scale_fill_brewer(palette="Dark2") +
-  labs(x="polaridades", y="número de tweets") 
+  labs(x="polaridades", y="numero de tweets") 
 
 ##############
-#CREACIÓN DE NUBE DE SENTIMIENTOS
+#CREACION DE NUBE DE SENTIMIENTOS
 ##############
 # separamos el texto por emociones
 emociones = levels(factor(dataframe_sentimiento$emocion))
@@ -211,7 +212,7 @@ for (i in 1:n_emocion)
   emocionesdoc[i] = paste(tmp, collapse=" ")
 }
 
-# eliminamos stopwords ESPECIFICAR SI ES EN INGLES O ESPAÑOL
+# eliminamos stopwords ESPECIFICAR SI ES EN INGLES O ESPANOL
 emocionesdoc = removeWords(emocionesdoc, stopwords("spanish"))
 # creamos un corpus
 corpus = Corpus(VectorSource(emocionesdoc))
@@ -227,22 +228,22 @@ comparison.cloud(tdm, colors = brewer.pal(n_emocion, "Dark2"),
 #######
 #PORCENTAJES 
 #######
-# grafico de distribución de emociones
+# grafico de distribucion de emociones
 ggplot(dataframe_sentimiento, aes(x=emocion)) +
   ggtitle(paste(TEMATICA))+ 
   theme(plot.title = element_text(hjust = 0.5)) + #AJUSTAR TITULO AL CENTRO
   geom_bar(aes(y=..count.., fill=emocion)) +
   scale_fill_brewer(palette="Dark2") +
-  labs(x="emociones", y="número de tweets")+ 
+  labs(x="emociones", y="numero de tweets")+ 
   scale_y_continuous(labels = percent_format())
 #########
-# plot distribution of polarity
+# grafico de distribucion de polaridad
 ggplot(dataframe_sentimiento, aes(x=polarity)) +
   ggtitle(paste(TEMATICA))+ 
   theme(plot.title = element_text(hjust = 0.5)) + #AJUSTAR TITULO AL CENTRO
   geom_bar(aes(y=..count.., fill=polarity)) +
   scale_fill_brewer(palette="Dark2") +
-  labs(x="polaridades", y="número de tweets")+ 
+  labs(x="polaridades", y="numero de tweets")+ 
   scale_y_continuous(labels = percent_format())
 #########
 
