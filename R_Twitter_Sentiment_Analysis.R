@@ -104,7 +104,7 @@ typeof(TWEET_texto) #vemos que ahora es de tipo character
 
 #PUEDE TARDAR EN EJECUTAR YA QUE DEBE RECOGER 2000 MENSAJES
 #########
-#FIN DE LA CONEXCION A TWITTER Y DE LA OPTENCI??N DEL TEXTO
+#FIN DE LA CONEXION A TWITTER Y DE LA OPTENCION DEL TEXTO
 #########
 
 
@@ -247,7 +247,14 @@ ggplot(dataframe_sentimiento, aes(x=polarity)) +
   scale_y_continuous(labels = percent_format())
 #########
 
+tdm <- corpus.completed %>% 
+  TermDocumentMatrix(control = list(wordLengths = c(1, Inf)))  %>% 
+  print
+idx <- which(dimnames(tdm)$Terms %in% c("r", "data", "mining"))
+tdm[idx, 21:30] %>% as.matrix()
 
+# inspect frequent words
+freq.terms <- tdm %>% findFreqTerms(lowfreq=20) %>% print
 term.freq <- tdm %>% as.matrix() %>% rowSums()
 term.freq <- term.freq %>% subset(term.freq>=20)
 df <- data.frame(term=names(term.freq), freq=term.freq)
@@ -255,7 +262,7 @@ df <- df[order(df$freq,decreasing = TRUE),]
 df
 
 
-
 ggplot(df, aes(x=reorder(term, freq), y=freq)) + geom_bar(stat="identity") +
   xlab("Terms") + ylab("Freq") + coord_flip() + theme(axis.text=element_text(size=7))
+
 
