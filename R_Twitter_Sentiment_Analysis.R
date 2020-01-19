@@ -247,3 +247,15 @@ ggplot(dataframe_sentimiento, aes(x=polarity)) +
   scale_y_continuous(labels = percent_format())
 #########
 
+
+term.freq <- tdm %>% as.matrix() %>% rowSums()
+term.freq <- term.freq %>% subset(term.freq>=20)
+df <- data.frame(term=names(term.freq), freq=term.freq)
+df <- df[order(df$freq,decreasing = TRUE),]
+df
+
+
+
+ggplot(df, aes(x=reorder(term, freq), y=freq)) + geom_bar(stat="identity") +
+  xlab("Terms") + ylab("Freq") + coord_flip() + theme(axis.text=element_text(size=7))
+
